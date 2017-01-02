@@ -2,4 +2,6 @@
 
 #Grep
 
-#
+#Check version of OS on Ubuntu:
+lsb_release -a
+
