@@ -1,0 +1,105 @@
+Perl DBI and DBD Installation on TeamSite .
+
+TeamSite uses 32 bit iw-perl (Perl distriution), so we need to compile the to 32 bit on 64 bit machines.
+Steps:
+
+---- Need to Update --- as per recent installations 0n TeamSite 8.1
+
+Here are the steps for iwperl DBI & DBD modules compilation and installation on 64bit machine/os with 32 bit compilation.
+ 
+Machine:
+Linux 5.1 santiago, 64 bit
+Teamsite 732 ,
+Teamsite Perl : 32 bit.
+ 
+ 
+
+We got installed all the 32 bit rpms required for gcc/make to compile in 32bit mode.
+ 
+Compile and Install the DBI
+Steps:
+1.       Download the DBI packager from CPAN
+
+2.       Extract the package  --- tar -xvf DBI-1.627.tar
+
+3.       cd DBI-1.627
+
+4.       /data01/iw/TeamSite/iw-perl/bin/iwperl Makefile.PL
+
+5.       Update  Makefile (not the Makefile.PL) to add  “-O  -m32” to CCLFAGS,
+
+a.       After updating it looks like this:  CCFLAGS = -fno-strict-aliasing -O -m32 -I/usr/local/include -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -I/usr/include/gdbm
+
+ 
+6.       make PASTHRU_INC='-m32' LD='cc -m32'
+
+7.       make install.
+
+ 
+8.       Check the version, it should print the version without any errors… if any errors it will print at “use DBI”.
+
+$/iwhome/iw-perl/bin/iwperl
+use DBI;
+print "$DBI::VERSION";
+ 
+o/p:
+1.627
+ 
+Compile and Install the DBD
+Steps:
+1.       Download the DBD package from CPAN
+
+2.       Extract the package -- tar –xvf DBD-Oracle-1.64.tar
+
+3.       cd DBD-Oracle-1.64
+
+4.       Download the instant client ( as we previously faced problem of segmenation fault error even after installing everything) for 11g for 32bit (as of now: latest version: Version 12.1.0.1.0) *
+
+5.       Url:http://www.oracle.com/technetwork/topics/linuxsoft-082809.html
+
+a.       Downloaded the following zips and extracted to directory(in this case: /data01/app/oracle/product/11.2.0/instant_client)
+
+                                                               i.      Instant Client Package - Basic: All files required to run OCI, OCCI, and JDBC-OCI applications
+
+                                                             ii.      Instant Client Package - SQL*Plus: Additional libraries and executable for running SQL*Plus with Instant Client
+
+                                                            iii.      Instant Client Package - SDK: Additional header files and an example makefile for developing Oracle applications with Instant Client
+
+6.       Set the ORACLE_HOME and LD_LIBRARY_PATH env variables:
+
+a.       export ORACLE_HOME= /data01/app/oracle/product/11.2.0/instant_client/instantclient_12_1
+
+b.      export LD_LIBRARY_PATH = $ORACLE_HOME ( as there is no lib directory… we set it ORACLE_HOME)
+
+ 
+7.       /data01/iw/TeamSite/iw-perl/bin/iwperl Makefile.PL -m /data01/app/oracle/product/11.2.0/instant_client/instantclient_12_1/sdk/demo/demo.mk  
+
+it looks fine…. But in between it threw this error –we overlooked… sqlplus: error while loading shared libraries: libaio.so.1: cannot open shared object file: No such file or directory
+
+8.       make PASTHRU_INC='-m32' LD='cc -m32'
+
+9.       make install
+
+10.   Testing with a perl code: (no errors… should print the DBI has value).
+
+$/iwhome/iw-perl/bin/iwperl
+use DBI;
+print DBI->connect("dbi:Oracle:host=<server-ip/address>”;port=1521;sid=dbsid",iwtsdb,password);
+ 
+o/p:
+got this error:
+install_driver(Oracle) failed: Can't load '/data01/iw/TeamSite/iw-perl/site/lib/auto/DBD/Oracle/Oracle.so' for module DBD::Oracle: libaio.so.1: cannot open shared object file: No such file or directory at /data01/iw/TeamSite/iw-perl/lib/DynaLoader.pm line 229.
+at (eval 3) line 3
+Compilation failed in require at (eval 3) line 3.
+Perhaps a required shared library or dll isn't installed where expected
+at - line 2
+ 
+***Then Installed this rpm : http://public-yum.oracle.com/repo/OracleLinux/OL6/latest/i386/libaio-0.3.107-10.el6.i686.rpm
+ 
+Executed the above program… no errors… below is the output.
+ 
+DBI::db=HASH(0x81b7aa8)
+ 
+ 
+ 
+*The reason to download the instant client is get this demo.mk file as this was not available with the full client installation.
