@@ -1,0 +1,10 @@
+grep
+
+Search for a pattern in a file
+grep -i "abc" iw.tsindex.log 
+
+Search for multiple conditions/pattern in a file
+grep -E 'word1|word2' abc.log
+grep -E  'Details:Iteration of workarea file list|Details:FileList retrived size|Details:reportInfo' ReportScript.log
+
+
