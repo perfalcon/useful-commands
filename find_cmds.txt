@@ -1,0 +1,16 @@
+find 
+
+To list files accessed more than 30 days
+find . -name "error*" -mtime +30 | xargs ls -l    -- long listing with xargs
+find . -mtime +30 -name "*engine.log"  -exec ls -l {} +  --- long listing with exce
+
+
+find /dir -cmin -60 # creation time
+find /dir -mmin -60 # modification time
+find /dir -amin -60 # access time
+
+To search a pattern in a list of files
+find /dir -type f -exec grep -i "CSQuery" {} +
+
+find . -name "*ContentChunks*" -exec grep  'Files deployed' {} +
+
