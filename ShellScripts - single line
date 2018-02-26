@@ -2,3 +2,6 @@
 while true; do [ cmd1;cmd2;cmd3;] ;done
 example:
   while true ; do ps -ef | grep Connector ; sleep 5s; done
+
+#To execute a for 
+for i in `cat BranchFileList.txt` ; do ; j=${i//\/abc10\.efg\.com/iwmnt}/STAGING; echo $j; find $j -type f | wc -l ; print "==========\n";done;
