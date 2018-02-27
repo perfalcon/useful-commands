@@ -1,0 +1,5 @@
+copy between servers
+Recurvise with Directory
+scp -r username@server:/startdir/ab/de/xy  . (destination directory on current server)
+
+scp -r /startdir/ab/de/xy  username@server:/destination-dir
