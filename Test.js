@@ -1,12 +1,9 @@
 //###################################################################
-//# Name: DCT_Validate.js
+//# Name:
 //# Author: Balaveera Thatikonda
 //# Created: 8 Dec 2010
 //# Comments:This javascript contains the formapi functions to be executed by Enr-Articles DCT
 //# History:  
-//# Date:9-Apr-2011
-//# Code Movement date to QA
-//################################################################
 
 /* Begin Variable Declaration */
 var waPath =IWDatacapture.getWorkarea();
