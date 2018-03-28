@@ -1,0 +1,333 @@
+package com.mgh.mhc.enr;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Hashtable;
+
+import javax.xml.transform.TransformerException;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.soap.util.mime.ByteArrayDataSource;
+import org.dom4j.Element;
+
+import com.interwoven.cssdk.access.CSUser;
+import com.interwoven.cssdk.common.CSClient;
+import com.interwoven.cssdk.common.CSException;
+import com.interwoven.cssdk.common.xml.ElementableUtils;
+import com.interwoven.cssdk.filesys.CSSimpleFile;
+import com.interwoven.cssdk.filesys.CSVPath;
+import com.interwoven.cssdk.transform.XSLTransformer;
+import com.interwoven.cssdk.workflow.CSComment;
+import com.interwoven.cssdk.workflow.CSExternalTask;
+import com.interwoven.cssdk.workflow.CSGroupTask;
+import com.interwoven.cssdk.workflow.CSTask;
+import com.interwoven.cssdk.workflow.CSUserTask;
+import com.interwoven.cssdk.workflow.CSWorkflow;
+import com.interwoven.sharedutils100.mail.MailConfigException;
+import com.interwoven.sharedutils100.mail.MailerConfig;
+import com.interwoven.ui.teamsite.workflow.task.TaskContext;
+import com.interwoven.ui.teamsite.workflow.task.urltask.MailNotificationTask;
+import com.mgh.common.Logger;
+import com.mgh.common.Utilities;
+
+/*****************************************************************************
+ * Send Mail Implementation.
+ *
+ * This class is used to send the mail
+ *
+ * @author Balaveera Thatikonda
+ * @version 1.00, Dec 8, 2010
+ * History  
+ * Date:25-Apr-2011
+ * Updated with log statements
+ * Updated to handle the blank for CC variable
+ * Date: 25-Mar-2011
+ * Added the import com.mgh.common.Utilities;import com.mgh.common.Logger;
+ *****************************************************************************/
+
+public class SendMail extends MailNotificationTask {
+	
+	public Logger logger = null; 
+
+	/**
+	 *  Creates Mail Config Object to send mail using mail task in the Model.
+	 *  
+	 * @param client Contains all the information related to the TeamSite
+	 * @param task Variable which has the current task's information
+	 * @param params Contains parameters
+	 * 
+	 * @return MailerConfig Mailer Object all the required values.
+	 */
+	protected MailerConfig createMailConfig(CSClient client, CSExternalTask currentTask, Hashtable params)
+	throws MailConfigException, CSException {
+		
+		logger = new Logger(currentTask, this.getClass().getCanonicalName());
+		
+		MailerConfig mailConfig = new MailerConfig();
+		
+		try {
+			logger.info("************************************************************************");
+			logger.info("************************ Send Mail Starts *************************");
+			logger.info("************************************************************************");
+			logger.info("Task Owner:" + currentTask.getOwner().getDisplayName() + "[" + currentTask.getOwner().getName() + "]");
+			logger.info("Workarea:" + currentTask.getArea().getVPath().getPathNoServer().toString());
+			
+			String targetTaskName = currentTask.getVariable("target_task_name");
+			logger.debug("target_task_name:"+targetTaskName);
+			if (targetTaskName.equals("REVIEWTASK")) {
+				targetTaskName = currentTask.getName().replaceFirst("iwemail-", "");
+			}
+			
+			CSTask targetTask = getTaskByName(currentTask.getWorkflow(), targetTaskName);
+			logger.debug("targetTask name:"+targetTask.getKindName());
+			
+			// From Address
+			String senderAddress = currentTask.getOwner().getEmailAddress();
+			if (currentTask.getVariable("FROM") != null && currentTask.getVariable("FROM").contains("@")) {
+				senderAddress = currentTask.getVariable("FROM");
+			}
+			logger.debug("From: "+senderAddress);
+			// To Address
+			ArrayList<String> recipientAddress = new ArrayList<String>();
+			if (currentTask.getVariable("TO") != null) {
+				String toUsers = currentTask.getVariable("TO");logger.debug("TO:"+toUsers);
+				String[] toUser = toUsers.split(",");
+				for (String user : toUser) {
+					try {
+						CSUser csUser = client.getUser(user, true);
+						if (csUser != null & csUser.getEmailAddress() != null) {
+							recipientAddress.add(csUser.getEmailAddress());
+							logger.debug("TO:"+csUser.getEmailAddress());
+						}
+					} catch (Exception e) {
+						logger.info("Exception raised while processing  'TO' for sending email...Reason"+e.getCause()+"\n Description "+e.getMessage());
+						logger.error(e);
+					}
+					
+				}
+			} else if (targetTask.getKindName().equalsIgnoreCase(CSTask.GROUP_TASK_STRING)) {
+				CSGroupTask csGroupTask = (CSGroupTask) targetTask;
+				CSUser[] csUsers = csGroupTask.getSharedByUsers();
+				for (CSUser csUser : csUsers) {
+					if (csUser.getEmailAddress() != null) {
+						recipientAddress.add(csUser.getEmailAddress());
+					}
+				}
+			} else {
+				CSUser csUser = targetTask.getOwner();
+				if (csUser.getEmailAddress() != null) {
+					recipientAddress.add(csUser.getEmailAddress());
+				} else {
+					recipientAddress.add(senderAddress);
+				}
+			}
+			
+			// CC
+			ArrayList<String> ccAddress = new ArrayList<String>();
+			if (currentTask.getVariable("CC") != null && !StringUtils.isBlank(currentTask.getVariable("CC"))) {
+				String toUsers = currentTask.getVariable("CC");logger.debug("CC:"+toUsers);
+				String[] toUser = toUsers.split(",");
+				for (String user : toUser) {
+					try {
+						CSUser csUser = client.getUser(user, true);
+						if (csUser != null & csUser.getEmailAddress() != null) {
+							ccAddress.add(csUser.getEmailAddress());
+							logger.debug("CC:"+csUser.getEmailAddress());
+						}
+					} catch (Exception e) {
+						logger.info("Exception raised while processing  'CC' for sending email...Reason"+e.getCause()+"\n Description "+e.getMessage());
+						logger.error(e);
+					}
+					
+				}
+			}
+			
+			// Subject
+			String subject = "TeamSite Email Notification";
+			if (currentTask.getVariable("SUBJECT") != null) {
+				subject = currentTask.getVariable("SUBJECT");
+			}
+
+			if (currentTask.getVariable("target_task_name").equals("REVIEWTASK")) {
+				if (targetTask.getVariable("SUBJECT") != null) {
+					subject = targetTask.getVariable("SUBJECT");
+				}
+			}
+			
+			// Body Message
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			
+            String strTemplate = StringUtils.trim(currentTask.getVariable("mail_template"));
+
+            if (StringUtils.isBlank(strTemplate)) {
+                this.transitionComment = "Required mail variable \"mail_template\" is missing. Mail is not sent.";
+                logger.error(this.transitionComment);
+                throw new MailConfigException(this.transitionComment);
+            }
+
+            CSVPath templateVpath = new CSVPath(strTemplate);
+
+            CSSimpleFile templateFile = (CSSimpleFile) (CSSimpleFile) client.getFile(templateVpath);
+            if (templateFile == null) {
+                this.transitionComment = "Mail template \"" + strTemplate + "\" not found in store. Mail is not sent.";
+                logger.error(this.transitionComment);
+                throw new MailConfigException(this.transitionComment);
+            }
+
+            String contentXml = createContentXml(currentTask.getOwner().getFullName(), currentTask, targetTask);
+
+            try {
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(contentXml.getBytes("UTF-8"));
+                XSLTransformer.transform(inputStream, templateFile, outputStream);
+            } catch (TransformerException tex) {
+                this.transitionComment = "Exception when transforming email content. Mail is not sent.";
+                logger.error(this.transitionComment);
+                throw new MailConfigException(this.transitionComment);
+            } catch (UnsupportedEncodingException ueex) {
+                this.transitionComment = "Unsupported encoding exception when transforming email content. Mail is not sent.";
+                logger.error(this.transitionComment);
+                throw new MailConfigException(this.transitionComment);
+            }             
+			
+            // Configure
+            mailConfig.setHost(MAIL_SERVER);
+            mailConfig.setSubject(subject);
+            mailConfig.setSender(senderAddress);
+            mailConfig.setToRecipients(recipientAddress);
+            mailConfig.setCcRecipients(ccAddress);
+            mailConfig.addDataSource(new ByteArrayDataSource(outputStream.toByteArray(), "text/html"));
+
+		} catch (Exception e) {
+			logger.info("Exception raised while processing for sending email...Reason"+e.getCause()+"\n Description "+e.getMessage());
+			logger.error(e);
+		} finally {
+			logger.info("************************************************************************");
+			logger.info("************************ Send Mail Ends *************************");
+			logger.info("************************************************************************");
+			logger.close();
+		}
+		
+		return mailConfig;
+	}
+	
+	/**
+	 * Creates the XML needed to create the content/body of the mail sent.  
+	 * 
+	 * @param fullName Name of the current task's owner
+	 * @param currentTask Current task's object.
+	 * @param targetTask Target task's object
+	 * 
+	 * @return String String containing the XML for creating the body content. 
+	 */
+	private String createContentXml(String fullName, CSExternalTask currentTask, CSTask targetTask) {
+		try {
+		    CSWorkflow job = currentTask.getWorkflow();
+
+		    Element mailContentRoot = ElementableUtils.newElement("MailContent");
+		    Element jobElement = mailContentRoot.addElement("Job");
+		    jobElement.addAttribute("description", job.getDescription());
+		    
+		    jobElement.addElement("iw_comments").addText(job.getVariable("iw_comments"));
+		    Element currentTaskElement = currentTask.toElement("CurrentTask");
+		    currentTaskElement.addAttribute("assigner", fullName);
+		    jobElement.add(currentTaskElement);
+		    if (targetTask.getKindName().equals(CSTask.GROUP_TASK_STRING)) {
+				try
+				{
+					Element targetTaskElement = Utilities.toElement(targetTask, "TargetTask");
+					jobElement.add(targetTaskElement);
+				} catch (Exception e) {
+					logger.error(e);
+				}
+			} else {
+			    Element targetTaskElement = targetTask.toElement("TargetTask");
+			    jobElement.add(targetTaskElement);
+			}
+		    
+		    
+		    mailContentRoot.addElement("WebHost").addText(IWWEBD_HOST + IWWEBD_PORT);
+
+		    currentTaskElement.addAttribute("branchName", currentTask.getArea().getBranch().getName());
+		    currentTaskElement.addAttribute("areaName", currentTask.getArea().getName());
+
+		    String strDueDate = job.getVariable("due_date");
+		    if (strDueDate != null)
+		    {
+		      Date dueDate = TaskContext.parseDate(strDueDate);
+		      if (dueDate != null)
+		        jobElement.addElement("DueDate", dueDate.toString());
+		      else
+		      {
+		        jobElement.addElement("DueDate");
+		      }
+		    }
+		    CSUser jobOwner = job.getOwner();
+		    jobElement.add(jobOwner.toElement("Owner"));
+
+		    CSComment[] jobComments = job.getComments();
+		    if (jobComments != null)
+		    {
+		      Element jobCommentsElement = jobElement.addElement("Comments");
+		      for (int i = 0; i < jobComments.length; ++i)
+		        jobCommentsElement.add(jobComments[i].toElement());
+		    }
+		    
+	        String[] transitions = new String[5];
+	        int TargetTaskID = 0;
+	        if (targetTask.getKindName().equalsIgnoreCase("usertask")) {
+
+	            CSUserTask targetUserTask = (CSUserTask) targetTask;
+	            transitions = targetUserTask.getTransitions();
+	            TargetTaskID = targetUserTask.getId();
+	        } else if (targetTask.getKindName().equalsIgnoreCase("externaltask"))// Review task will have
+	        // this
+	        {
+	            CSExternalTask targetExternalTask = (CSExternalTask) targetTask;
+	            transitions = targetExternalTask.getTransitions();
+	            TargetTaskID = targetExternalTask.getId();
+	        } else {
+	            transitions = null;
+	        }
+
+	        // Building the transitions button HTML code itself.
+	        if (targetTask.getKindName().equalsIgnoreCase(CSTask.CGI_TASK_STRING)) {
+	            Element Transitions = jobElement.addElement("Transitions");
+	            Element TransitionElement = Transitions.addElement("Transition");
+	            String javaScript = "/iw-cc/command/iw.ccpro.task_details_transition_task?taskid=" + targetTask.getId();
+	            String buttonCode = "<table cellspacing='0' cellpadding='0' border='0'>  <tr>	<td><a id=\"iw.finish\" target=\"_blank\" title=\"Start Input Task\" href=\"" + javaScript + "\" iw_wf=\"width=600,height=450,scrollbars=1,menubar=0,titlebar=0,resizable=1,status=1,center=true,dependent=false\" iw_enabled=\"true\" iw_css_enabled=\" iw-base-button\" iw_css_disabled=\" iw-base-button-disabled\" class=\" iw-base-button\">Start&#160;Input&#160;Task</a>  </tr></table>";
+	            TransitionElement.addText(buttonCode);
+	        } else if (!(targetTask.getKindName().equalsIgnoreCase("grouptask"))) {
+	            if (transitions != null) {
+	                Element Transitions = jobElement.addElement("Transitions");
+	                for (String transitiontask : transitions) {
+	                    Element TransitionElement = Transitions.addElement("Transition");
+	                    String javaScript = "/iw-cc/command/iw.ccpro.task_details_transition_task?transition=" + transitiontask + "&full_redirect=true&do_transition=true&taskid=" + TargetTaskID + "&show_comments=true&comment=Completed Mail Task";
+	                    String buttonCode = "<table cellspacing='0' cellpadding='0' border='0'>  <tr>	<td><input type='submit' style='border:1px solid;border-color:#BFBFBF;font-family: Verdana, Arial, Helvetica, sans-serif;	font-size: 11px; color:#11297B;background:#E2E2E2;height:23px' onclick=\"transition(\'" + javaScript + "\')\" name='transition' value='" + transitiontask + "'/></td>  </tr></table>";
+	                    TransitionElement.addText(buttonCode);
+	                }
+	            }
+	        } else if (targetTask.getKindName().equalsIgnoreCase("grouptask")) {
+	            CSGroupTask targetGroupTask = (CSGroupTask) targetTask;
+	            TargetTaskID = targetGroupTask.getId();
+	            Element Transitions = jobElement.addElement("Transitions");
+	            Element TransitionElement = Transitions.addElement("Transition");
+	            String javaScript = "/iw-cc/command/iw.ccpro.take_task?done_page=/iw-cc/ccpro/workflow/update_handler.jsp?taskid=" + TargetTaskID + "&full_redirect=true&taskid=" + TargetTaskID + "&show_comments=true&comment=Completed Mail Task";
+	            ;
+	            String buttonCode = "<table cellspacing='0' cellpadding='0' border='0'>  <tr>	<td><input type='submit' style='border:1px solid;border-color:#BFBFBF;font-family: Verdana, Arial, Helvetica, sans-serif;	font-size: 11px; color:#11297B;background:#E2E2E2;height:23px' onclick=\"transition(\'" + javaScript + "\')\" name='transition' value='Take'/></td>  </tr></table>";
+	            TransitionElement.addText(buttonCode);
+	        }
+
+			logger.info("xml-------->"+ ElementableUtils.toString(mailContentRoot, true));
+		    return ElementableUtils.toString(mailContentRoot, true);
+			
+		} catch (Exception e) {
+			logger.info("Exception raised while processing createContentXml...Reason"+e.getCause()+"\n Description "+e.getMessage());
+			logger.error(e);
+			return e.getMessage();
+		}
+	  }
+		
+}
