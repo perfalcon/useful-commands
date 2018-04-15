@@ -1,0 +1,4 @@
+Download a specific file
+curl -LJO <raw url to the file in git>
+For Example:
+  curl -LJO https://raw.githubusercontent.com/udacity/RoboND-Localization-Project/master/urdf/udacity_bot.gazebo
