@@ -14,3 +14,5 @@ find /dir -type f -exec grep -i "CSQuery" {} +
 
 find . -name "*ContentChunks*" -exec grep  'Files deployed' {} +
 
+Find a word in all the files recursively in a directory
+grep -rl "word" 
