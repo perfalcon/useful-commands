@@ -7,4 +7,6 @@ Search for multiple conditions/pattern in a file
 grep -E 'word1|word2' abc.log
 grep -E  'Details:Iteration of workarea file list|Details:FileList retrived size|Details:reportInfo' ReportScript.log
 
+Search in a gzip file
+zgrep -i 'word1|word2' abc.log
 
