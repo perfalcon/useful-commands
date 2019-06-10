@@ -3,3 +3,10 @@ Recurvise with Directory
 scp -r username@server:/startdir/ab/de/xy  . (destination directory on current server)
 
 scp -r /startdir/ab/de/xy  username@server:/destination-dir
+
+Copy a file
+From Destination Server
+scp username@server:/startdir/ab/de/file.tx . (destination directory on current server)  
+
+From Source Server
+scp /startdir/ab/de/file.tx username@server:/destination-dir
