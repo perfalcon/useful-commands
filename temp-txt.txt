@@ -1,0 +1,41 @@
+https://medium.com/@karolisram/getting-into-toptal-the-entire-process-f3ee4f931949
+
+Homepage
+Getting into Toptal: The Entire Process 👐
+Go to the profile of Karolis Ramanauskas
+Karolis Ramanauskas
+Jul 16, 2017
+Since I got back into contracting I thought it might be interesting to see what else exists out there in terms of marketplaces besides Elance and Upwork, both of which are disappointing and are mostly used for low quality work in my honest opinion.
+
+Some of the ones I found and liked are Crew.co, Gun.io and Toptal.com. But since I have a buddy of mine who works at Toptal and is happy there I decided to give it a shot too.
+
+The main things that make Toptal stand out in my eyes are these:
+
+Airbnb, Zendesk, Pfizer and other interesting companies use Toptal to find workers which is great.
+Most of the work are long-term gigs spanning at least several months.
+Only Top 3% of people who apply get in.
+
+Knowing that only the Top 3% get in was intimidating to me at first and let me tell you I was not ready for what was waiting ahead. The entire application process is rather strenuous and at least in my case really pushed my limits. Thankfully I passed and now can share the process and some tips for you too!
+
+Here is my experience
+1. The first interview is a quick 10-minute Skype chat just to test your English skills, plus to find out your motivation behind applying, how many hours you are planning to work, hourly rate, basic stuff like that. Only 26.4% of people pass this stage. 😲 I am not sure how that is possible to screw up at this stage but oh well.
+
+2. The second stage is where the fun starts. You get a link to a platform called Codility which contains 3 algorithmic challenges which must be solved in 90 minutes. The challenges differ in difficulty and none of them are super hard per se but the time limit can get you. I would say it is impossible to pass these tests without some knowledge of data structures and algorithms but the questions definitely do not go so deep that you have to know how Red-Black Tree works or anything like that. If you can confidently pass all the challenges in Lessons 1–10 on the Codility Practice, I am pretty sure you can solve all 3 challenges on time. What almost got me during the test are the edge cases and time limits. I would recommend using your own IDE for solving the challenges and test code with as many types of inputs as possible, let your imagination wild here! Also, be mindful of your algorithm’s run time to make sure it is not O(n²) when the solution is asking for O(log n) or something like that. Also, be aware that you can use Google, StackOverflow, etc. during this stage which is helpful to search for some forgotten syntax, helper functions, etc. Only 7.4% of the total candidates get to the next stage.
+
+3. After submitting the Codility test you get another email asking to schedule a live-coding interview session. During the interview you will first be asked to describe your solutions to Codility tests. I found it hard to remember why I did things one way or another but it’s fine since they only really want to find out if you wrote the solutions to these challenges yourself so it’s not necessary to go super deep. After that you are presented with another coding exercise and given as much time as you want to read through it. Once you are ready, you start solving the problem with a 15 minutes limit whilst the interviewer is watching you. Then the interviewer inspects and tests your solution, and if all test cases pass, you can proceed to the next stage! Again, the challenge is not that difficult but the time limit is really short. When presented with a challenge I intuitively knew there is an elegant way of solving it but it just did not come to me then. So I still solved it but in a much dirtier way which the interviewer was not thrilled about but the solution worked so he let me go. Later the solution came to me and I was banging my head by its simplicity 😂 Only 3.6% of applicants pass this stage.
+
+4. The final stage is in some ways a lot easier than the previous two. You get a sample project assignment and are given two weeks deadline. Depending on your skill level it may take 10 to 40 hours to do. I won’t describe the project in detail but in short, it is a single-page application with basic CRUD functionality where users can sign up, activate account via email, login, delete and update their own profile, interact with the website by adding or deleting various elements. There are also different permission levels which must be taken in mind. All the functionality must also be available via REST APIs. There are several ways to solve this challenge and the easiest one is to only do the front-end part and leave all the back-end stuff to something like Firebase. One caveat to that is that you will only be allowed to work on front-end projects in that case. So I sucked it up and did it all in React.js for front-end, and Django for the back-end. But if you choose to go the front-end only route, you can always do additional tests once you are inside the platform and get access to back-end jobs. Only 3.2% pass this stage and get onto the platform!
+
+5. If you pass the last interview stage, you immediately get accepted and introduced to Toptal platform. Then you discuss your hourly rate and agree on time-availability. Make sure you know beforehand how much are you willing to charge as Toptal will accept any hourly rate you propose. But remember it’s still a marketplace. So if the hourly rate is too high, you won’t get any clients. Also, the interviewer will recommend what may be a reasonable hourly rate based on your experience and location. Finally, you setup your profile which later gets polished by Toptal fairies. And that’s it, what’s left is apply for jobs and get to work! 🕺
+
+Criticism
+Many people say that the only reason Top 3% pass all these stages is that not everyone is willing to go through all this crap even if they are capable. I think there is some truth to it too, especially if you are US-based where software developer salaries are the highest in the world. Most of the Toptal network consists of people coming from everywhere but the US. This makes sense as, for example, no company in Lithuania could offer me the hourly rate I now fetch on Toptal. For someone working in the US it is an entirely different story.
+
+Plus, it is also debatable how much coding challenges really test your abilities. For example, Crew.co and Gun.io rely on your portfolio and resume entirely which makes sense. Who cares if you can invert a binary tree but your code is an unmaintainable piece of crap only understood by you and your projects work poorly?
+
+But I realize it is hard to find the optimal way to screen candidates and there are pros and cons to any approach you take. If you are good, you will pass any type of interview so it’s not something to fret about.
+
+Final word
+I hope sharing this experience has helped you in any way and now you have a balanced view of what application process to Toptal looks like. If you got scared of applying, I honestly think it’s still worth trying, only if to test what your limits are and where you can improve.
+
+If you do decide to apply, please consider using my affiliate link for your application and if you do, write me personally with any additional questions you may have. 😉
