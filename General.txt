@@ -1,0 +1,3 @@
+Login to putty from command line:
+putty.exe -pw passw0rd user@hostname
+putty -pw passw0rd user@hostname
