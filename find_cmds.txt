@@ -16,3 +16,9 @@ find . -name "*ContentChunks*" -exec grep  'Files deployed' {} +
 
 Find a word in all the files recursively in a directory
 grep -rl "word" 
+
+To list only the Dirs (ref: https://www.cyberciti.biz/faq/linux-list-just-directories-or-directory-names/)
+  find . -maxdepth 1 -type d
+   ls -l | grep '^d'   
+   ls -l | egrep '^d'
+   ls -d */
