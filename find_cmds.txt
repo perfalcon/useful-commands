@@ -22,3 +22,6 @@ To list only the Dirs (ref: https://www.cyberciti.biz/faq/linux-list-just-direct
    ls -l | grep '^d'   
    ls -l | egrep '^d'
    ls -d */
+
+To find the word debug in all .cpp files.
+$find . -name \*.cpp -exec grep -q "debug" '{}' \; -print
