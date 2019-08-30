@@ -92,3 +92,51 @@ public class GetClient {
         System.out.println("Current User Full Name : " +client.getCurrentUser().getFullName());
 	}
 }
+========
+=============
+=============
+import com.interwoven.cssdk.common.CSClient;
+import com.interwoven.cssdk.factory.CSFactory;
+
+public class TestClient {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		Properties properties  = new Properties();
+		
+			///////////////// Define Config Properties for CSJavaFactory ///////////////////
+			properties.setProperty(
+					"com.interwoven.cssdk.factory.CSFactory", 
+					"com.interwoven.cssdk.factory.CSJavaFactory");
+	
+			properties.setProperty(
+					"defaultTSServer", 
+					"cvlna170");//args[0]
+			
+			properties.setProperty(
+					"ts.server.os", 
+					"linux");//args[1]
+			//username = args[2]; password = args[3]; object = args[4]; vpath = args[5];
+			String username ="abcd";
+			String password = "xxxx";
+			///////////////////////////////////////////////////////////////////////////////
+			
+			CSFactory factory = CSFactory.getFactory( properties );
+			System.out.println("Factory initialized: " + factory );
+			try{
+				CSClient client = factory.getClient(
+						username,		 		// UserName 
+						"", 		 			// Roles: No-Op
+						password,				// Password
+						Locale.getDefault(), 	// Locale
+						"Example", 				// Application Context
+						null );	
+				
+				System.out.println("-->"+client.getCurrentUser());
+			}catch(Exception e){
+				System.out.println("Exception e");
+			}
+	}
+
+}
