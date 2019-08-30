@@ -25,3 +25,6 @@ To list only the Dirs (ref: https://www.cyberciti.biz/faq/linux-list-just-direct
 
 To find the word debug in all .cpp files.
 $find . -name \*.cpp -exec grep -q "debug" '{}' \; -print
+
+To Execute commoand on the subdirectories
+find /iwmnt/abc/edf/WORKAREA/content    -type d -exec chmod 2775 {} +
