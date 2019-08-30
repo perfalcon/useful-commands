@@ -1,0 +1,89 @@
+Pre-requisites:
+1. Install the glibc-devel-2.12-1.209.el6_9.2.i686 package 
+	 ( verify with this cmd rpm -qa | grep glibc-devel
+		You should see
+		scasda170-(/export/home/ucbu)->rpm -qa | grep glibc-devel
+		glibc-devel-2.12-1.209.el6_9.2.x86_64
+		glibc-devel-2.12-1.209.el6_9.2.i686
+		
+		 ) 
+2. Install the oracle 32 bit client
+	( verify 
+		ls -ltr /opt/vgi/oracle/12.1.0.2/
+		drwxrwxr-x 49 oracle dba 4096 Feb  2  2016 client
+		drwxrwxr-x 48 oracle dba 4096 Feb 27 13:33 client32
+		You should see a client32 directory)
+3. Download the DBI  -- copy from DA5 or C170 
+	1. Staged in p156 and p160
+	2. /var/Logs/vgi/perl-modules
+4. Download the  DBD -- copy from DA5 or C170
+	1. Staged in p156 and p160
+	2. /var/Logs/vgi/perl-modules
+
+
+INSTALLING DBI Module
+5. Extract DBI
+	1. Cd /var/Logs/vgi/perl-modules
+	2. tar -xvf DBI-1.636.tar
+6. cd /var/Logs/vgi/perl-modules/DBI-1.636
+7. Generate makefile:
+	1. /opt/vgi/Interwoven/TeamSite/iw-perl/bin/iwperl  Makefile.PL
+8. Update MakeFile 
+	1.  MakeFile to add "-0 -m32"
+	2. Looks like ---> CCFLAGS = -fno-strict-aliasing  -O -m32 -I/usr/local/include -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -I/usr/include/gdbm
+9. Make PassThru
+	1. Cd /var/Logs/vgi/perl-modules/DBI-1.636
+	2. /usr/bin/make  PASTHRU_INC='-m32' LD='cc -m32'
+10. Install module
+	1. Cd /var/Logs/vgi/perl-modules/DBI-1.636
+	2. /usr/bin/make install
+11. Verify the version:
+	1. cvlna170-(/export/home/ucbu/perl-modules/DBI-1.636)->/opt/vgi/Interwoven/TeamSite/iw-perl/bin/iwperl
+		use DBI;
+		print "$DBI::VERSION";
+		1.636
+
+12. /opt/vgi/Interwoven/TeamSite/iw-perl/bin/iwperl -MDBI -e 'print $DBI::VERSION';
+1.63
+
+INSTALLING DBD Module
+13. Extract DBD
+	1. Cd /var/Logs/vgi/perl-modules
+	2. tar -xvf DBD-Oracle-1.74.tar
+14. Cd /var/Logs/vgi/perl-modules/DBD-Oracle-1.74
+15. Set EV:
+	1.  export ORACLE_HOME=/opt/vgi/oracle/12.1.0.2/client32;
+	2.  export LD_LIBRARY_PATH=$ORACLE_HOME/lib;
+16. Generate makefile:
+	1. /opt/vgi/Interwoven/TeamSite/iw-perl/bin/iwperl Makefile.PL
+17. Update MakeFile 
+	1.  MakeFile to add "-0 -m32"
+	2. Looks like ---> CCFLAGS = -fno-strict-aliasing  -O -m32 -I/usr/local/include -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -I/usr/include/gdbm
+18. Make PASSTHRU
+	1. cd /var/Logs/vgi/perl-modules/DBD-Oracle-1.74
+	2. /usr/bin/make PASTHRU_INC='-m32' LD='cc -m32'
+19. Install module
+	1. Cd /var/Logs/vgi/perl-modules/DBD-Oracle-1.74
+	2. /usr/bin/make install
+20. Verify
+	1. Version:
+	/opt/vgi/Interwoven/TeamSite/iw-perl/bin/iwperl -MDBD::Oracle -e 'print $DBD::Oracle::VERSION';
+	1.74
+	2. Execution of a program:
+	#!/opt/vgi/Interwoven/TeamSite/iw-perl/bin/iwperl
+	use DBI;
+	
+	$ENV{'ORACLE_HOME'}="/opt/vgi/oracle/12.1.0.2/client/";
+	print "\n ORACLE_HOME -->$ENV{'ORACLE_HOME'}\n";
+	
+	my $dbh = DBI->connect("DBI:Oracle:wcsdev00_all","username","password");
+	$dbh->trace( 1, 'long_dbi_trace.txt' );
+	print "\n";
+	
+	my $sql = 'SELECT tname FROM tab';
+	my $sth = $dbh->prepare($sql);
+	$sth->execute();
+	while (my @row = $sth->fetchrow_array) {
+	   print "tname: $row[0] \n";
+	   }
+
