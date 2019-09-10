@@ -5,3 +5,6 @@ example:
 
 #To execute a for 
 for i in `cat BranchFileList.txt` ; do ; j=${i//\/abc10\.efg\.com/iwmnt}/STAGING; echo $j; find $j -type f | wc -l ; print "==========\n";done;
+
+#To display a file with only Size
+for i in `find /logs/Interwoven/TeamSite/local/logs/logs -type f` ; do  x=$(ls -ltr $i | cut -f5 -d" "); echo "$x $i"  ;  done;
