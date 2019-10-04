@@ -1,1 +1,15 @@
 # To Create alias for mostly used commands
+#======================================
+alias ts_logs="cd /logs/Interwoven/TeamSite/local/logs/"
+alias od_logs="cd /logs/Interwoven/openDeploy/OpenDeployNG/log"
+alias ts_home="cd /opt/Interwoven/TeamSite"
+
+#==========================
+
+alias dirs="ls -al | grep '^d'"
+alias l="ls -al"
+alias lf="ls -aFG"
+alias lm="ls -al|more"
+alias h="history"
+alias javac="/opt/Interwoven/TeamSite/tools/java/bin/javac"
+#=======================
