@@ -1,0 +1,7 @@
+References: 
+https://httpd.apache.org/docs/2.4/programs/rotatelogs.html
+https://httpd.apache.org/docs/2.4/logs.html
+
+CustomLog "|bin/rotatelogs /var/log/logfile 86400" common   --> every 24 hours 
+CustomLog "|bin/rotatelogs -n 3 /var/log/logfile 86400" common  --> every 24 hours, creates three copies
+  -- Use a circular list of filenames without timestamps. With -n 3, the series of log files opened would be "logfile", "logfile.1", "logfile.2", then overwriting "logfile". Available in 2.4.5 and later.
