@@ -1,0 +1,26 @@
+LOGFILE=`date '+%Y%m%d_%H%M%S'`.log
+LOGFILE="diff_files_$LOGFILE.log";
+echo $LOGFILE;
+
+for i in `cat deltaFiles.lst`;
+  do
+          echo "=============">>$LOGFILE;
+          echo "Processing .... $i">>$LOGFILE;
+#          echo "===============================================================================">>$LOGFILE;
+
+          cur_version=`/opt/Interwoven/TeamSite/bin/iwrlog -m $i | cut -f2|head -1`;
+          prev_version=`/opt/Interwoven/TeamSite/bin/iwrlog -m $i | cut -f2|head -2 | tail -1`;
+ #         echo "Current Version : $cur_version, Previous Version : $prev_version">>$LOGFILE;
+ #         echo "===================================">>$LOGFILE;
+          echo "Found Below Differences">>$LOGFILE;
+#          echo "======================">>$LOGFILE;
+          result=`/opt/Interwoven/TeamSite/bin/iwrcsdiff -r $cur_version -r $prev_version $i 2> /dev/null`;
+          echo $result >>$LOGFILE;
+          echo "">>$LOGFILE;
+          echo "">>$LOGFILE;
+
+
+
+  done
+
+echo " !!! END !!!">>$LOGFILE;
