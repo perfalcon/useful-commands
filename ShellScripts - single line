@@ -8,3 +8,9 @@ for i in `cat BranchFileList.txt` ; do ; j=${i//\/abc10\.efg\.com/iwmnt}/STAGING
 
 #To display a file with only Size
 for i in `find /logs/Interwoven/TeamSite/local/logs/logs -type f` ; do  x=$(ls -ltr $i | cut -f5 -d" "); echo "$x $i"  ;  done;
+
+#To iterate through a custom list on command line
+for i in 1 4 5 ; do  echo $i; done;
+
+#To end list of job on Teamsite
+for i in 343700 315660 315472 ; do  echo $i; ./iwrmjob $i; done;
