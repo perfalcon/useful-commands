@@ -1,0 +1,9 @@
+Online Regex: https://regex101.com/
+
+
+#Get all the attributes from an html tag
+(\S+)=["']?((?:.(?!["']?\s+(?:\S+)=|[>"']))+.)["']?  --> https://stackoverflow.com/questions/317053/regular-expression-for-extracting-tag-attributes
+ 
+#Get only the specific attributes like source
+source=["']?((?:.(?!["']?\s+(?:\S+)=|[>"']))+.)["']?
+
