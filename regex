@@ -7,3 +7,6 @@ Online Regex: https://regex101.com/
 #Get only the specific attributes like source
 source=["']?((?:.(?!["']?\s+(?:\S+)=|[>"']))+.)["']?
 
+#Get the domain name from a url (with protocol urls as well)
+"^(?:https?:)?(?:\\/\\/)?(?:[^@\\n]+@)?(?:www\\.)?([^:\\/\\n]+)"
+
