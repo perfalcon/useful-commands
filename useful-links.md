@@ -14,3 +14,7 @@ https://placeholder.com/web-design-tools/
 
 ## Placeholder images
 https://placeholder.com/
+
+
+## aws certifications - blogs
+https://jayendrapatil.com/aws-ebs-snapshot/
