@@ -7,3 +7,10 @@ Deep Learning
 
 *Gradien Descendent*
 http://ruder.io/optimizing-gradient-descent/
+
+
+#WebSite Designs
+https://placeholder.com/web-design-tools/
+
+#Placeholder images
+https://placeholder.com/
