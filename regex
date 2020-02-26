@@ -1,5 +1,9 @@
 Online Regex: https://regex101.com/
 
+##good article on medium
+https://medium.com/factory-mind/regex-cookbook-most-wanted-regex-aa721558c3c1
+https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285
+
 
 #Get all the attributes from an html tag
 (\S+)=["']?((?:.(?!["']?\s+(?:\S+)=|[>"']))+.)["']?  --> https://stackoverflow.com/questions/317053/regular-expression-for-extracting-tag-attributes
