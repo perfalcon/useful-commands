@@ -5,3 +5,5 @@
 #Check version of OS on Ubuntu:
 lsb_release -a
 
+#Alternative to telnet
+curl -vv telnet://OpenDeployServerName:20014 
