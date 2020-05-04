@@ -1,2 +1,6 @@
 TBD...
 odhome/iwodserverstatus
+
+===
+check whether a OD is port is enabled or not 
+curl -vv telnet://OpenDeployServerName:20014 
