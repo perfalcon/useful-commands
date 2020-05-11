@@ -1,0 +1,7 @@
+##
+Conversion Tables
+##
+Show the connected devices in the current wifi
+##
+Show the nearest bluetooth devices open for communication
+##
