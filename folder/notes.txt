@@ -21,3 +21,8 @@ The ui.frontend module is a Maven module that is actually a webpack project.
 This module is set up to be a dedicated front-end build system that outputs JavaScript and CSS files, which are in turn deployed to AEM. 
 The ui.frontend module allows developers to code with languages like Sass , TypeScript , use npm modules and integrate the output directly into AEM.
 The ui.frontend module will be covered in far more detail in the chapter on client-side libraries and front-end development. 
+
+
+---
+Component Authoring
+Components can be thought of as small modular building blocks of a web page. In order to re-use components, the components must be configurable. This is accomplished via the author dialog. Next we will author a simple component and inspect how values from the dialog are persisted in AEM
