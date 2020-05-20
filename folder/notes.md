@@ -1,5 +1,5 @@
 Modules in an AEM project
-core:
+***core:***
 The core module contains all of the Java code associated with the project. 
 When built it deploys an OSGi bundle to AEM. 
 
