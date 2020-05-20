@@ -9,6 +9,7 @@
 **Documentation**:
 * [Deploy.html](https://docs.adobe.com/content/help/en/experience-manager-65/deploying/deploying/deploy.html)
 * [Technical Requirements](https://docs.adobe.com/content/help/en/experience-manager-65/deploying/introduction/technical-requirements.html)
+* [HTL Getting Started](https://docs.adobe.com/content/help/en/experience-manager-htl/using/getting-started/getting-started.html)
 
 **Tutorials**
 * [Wknd Tutorial](https://docs.adobe.com/content/help/en/experience-manager-learn/getting-started-wknd-tutorial-develop/overview.html)
