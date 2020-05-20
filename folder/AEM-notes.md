@@ -10,6 +10,7 @@
 * [Deploy.html](https://docs.adobe.com/content/help/en/experience-manager-65/deploying/deploying/deploy.html)
 * [Technical Requirements](https://docs.adobe.com/content/help/en/experience-manager-65/deploying/introduction/technical-requirements.html)
 
+**Tutorials**
 * [Wknd Tutorial](https://docs.adobe.com/content/help/en/experience-manager-learn/getting-started-wknd-tutorial-develop/overview.html)
 * [Component Basics](https://docs.adobe.com/content/help/en/experience-manager-learn/getting-started-wknd-tutorial-develop/component-basics.html)
 * [AEM Lazybones](https://helpx.adobe.com/experience-manager/using/aem_lazybones.html)
