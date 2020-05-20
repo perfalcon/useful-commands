@@ -36,3 +36,6 @@ Sling Models are annotation driven Java "POJO's" (Plain Old Java Objects) that f
 
 ***Client-Side Libraries***
 Client-Side Libraries, clientlibs for short, provides a mechanism to organize and manage CSS and JavaScript files necessary for an AEM Sites implementation. Client-side libraries are the standard way to include CSS and JavaScript on a page in AEM
+
+***Experience Fragments***
+Experience Fragments, allow us to combine multiple components to create a single, reference-able, component. Experience Fragments have the advantage of supporting multi-site management and allows us to manage different headers/footers per locale. 
