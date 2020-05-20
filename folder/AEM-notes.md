@@ -12,6 +12,7 @@
 
 * https://docs.adobe.com/content/help/en/experience-manager-learn/getting-started-wknd-tutorial-develop/overview.html
 * https://docs.adobe.com/content/help/en/experience-manager-learn/getting-started-wknd-tutorial-develop/component-basics.html
+* https://helpx.adobe.com/experience-manager/using/aem_lazybones.html
 
 
 
