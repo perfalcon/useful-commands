@@ -33,3 +33,6 @@ HTML Template Language or HTL is a light-weight, server-side templating language
 
 ***Sling Models***
 Sling Models are annotation driven Java "POJO's" (Plain Old Java Objects) that facilitate the mapping of data from the JCR to Java variables, and provide a number of other niceties when developing in the context of AEM. 
+
+***Client-Side Libraries***
+Client-Side Libraries, clientlibs for short, provides a mechanism to organize and manage CSS and JavaScript files necessary for an AEM Sites implementation. Client-side libraries are the standard way to include CSS and JavaScript on a page in AEM
