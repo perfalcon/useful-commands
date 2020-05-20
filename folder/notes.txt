@@ -26,3 +26,9 @@ The ui.frontend module will be covered in far more detail in the chapter on clie
 ---
 Component Authoring
 Components can be thought of as small modular building blocks of a web page. In order to re-use components, the components must be configurable. This is accomplished via the author dialog. Next we will author a simple component and inspect how values from the dialog are persisted in AEM
+
+HTML Template Language (HTL)
+HTML Template Language or HTL is a light-weight, server-side templating language used by AEM components to render content. 
+
+Sling Models
+Sling Models are annotation driven Java "POJO's" (Plain Old Java Objects) that facilitate the mapping of data from the JCR to Java variables, and provide a number of other niceties when developing in the context of AEM. 
