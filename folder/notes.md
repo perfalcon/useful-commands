@@ -38,4 +38,12 @@ Sling Models are annotation driven Java "POJO's" (Plain Old Java Objects) that f
 Client-Side Libraries, clientlibs for short, provides a mechanism to organize and manage CSS and JavaScript files necessary for an AEM Sites implementation. Client-side libraries are the standard way to include CSS and JavaScript on a page in AEM
 
 ***Experience Fragments***
-Experience Fragments, allow us to combine multiple components to create a single, reference-able, component. Experience Fragments have the advantage of supporting multi-site management and allows us to manage different headers/footers per locale. 
+Experience Fragments, allow us to combine multiple components to create a single, reference-able, component. Experience Fragments have the advantage of supporting multi-site management and allows us to manage different headers/footers per locale.
+
+*** Page Template ***
+When creating a page you must select a template, which will be used as the basis for creating the new page. The template defines the structure of the resultant page, initial content, and allowed components.
+There are 3 main areas of Editable Templates :
+
+    **** Structure **** - defines components that are a part of the template. These will not be editable by content authors.
+    **** Initial Content **** - defines components that the template will start with, these can be edited and/or deleted by content authors
+    **** Policies **** - defines configurations on how components will behave and what options authors will have available. 
