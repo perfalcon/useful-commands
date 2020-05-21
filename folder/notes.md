@@ -44,7 +44,6 @@ Experience Fragments, allow us to combine multiple components to create a single
 When creating a page you must select a template, which will be used as the basis for creating the new page. The template defines the structure of the resultant page, initial content, and allowed components.
 There are 3 main areas of Editable Templates :
 
-***Structure***:
- defines components that are a part of the template. These will not be editable by content authors.
-****Initial Content**** : defines components that the template will start with, these can be edited and/or deleted by content authors
-****Policies****: defines configurations on how components will behave and what options authors will have available. 
+  ***Structure***:defines components that are a part of the template. These will not be editable by content authors.
+  ****Initial Content**** : defines components that the template will start with, these can be edited and/or deleted by content authors
+  ****Policies****: defines configurations on how components will behave and what options authors will have available. 
