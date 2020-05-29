@@ -10,3 +10,6 @@ grep -E  'Details:Iteration of workarea file list|Details:FileList retrived size
 Search in a gzip file
 zgrep -E 'word1|word2' abc.log
 
+Search and replace in a file
+grep -Rl 'search-text'| xargs sed -i 's/search-text/replace-text/g'
+
