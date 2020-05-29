@@ -3,3 +3,16 @@ TBD....
 Execute this :/opt/Interwoven/TeamSite/bin/iwpt_compile.ipl -pt /iwmnt/default/main/branch1/WORKAREA/WA/templatedata/Generic/calculator/presentation/calculator.tpl -iw_pt-dcr /iwmnt/default/main/branch1/WORKAREA/WA/templatedata/Generic/calculator/data/en/test/test-ins-cal1  -ocode  abc.ipl
 generates the abc.ipl
 then execute the abc.ip ( ./abc.ipl), it shows the errors why the tpl is generation is failing.
+
+
+To propagate permissions down on Linux/Unix environment: (sticky keys)
+
+Execute following commands at the directory & below you wanted.
+
+NOTE: Group is being set as ts_kofc
+
+find . -type d -exec chmod g+s {} \; -print
+
+find . -type d -exec chgrp group_name {} \; -print
+
+find . -type f -exec chgrp group_name {} \; -print
