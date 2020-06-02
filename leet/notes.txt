@@ -1,0 +1,6 @@
+main article:
+https://leetcode.com/discuss/interview-experience/661815/my-first-offer-in-faang-amazonmicrosoftfacebook-interview-experience-interview-prep-strategy
+
+  https://yangshun.github.io/tech-interview-handbook/introduction
+  https://www.youtube.com/playlist?list=PLDV1Zeh2NRsB6SWUrDFW2RmDotAfPbeHu -- William Fiset
+  https://www.youtube.com/channel/UCZCFT11CWBi3MHNlGf019nw --  Abdul Bari's
