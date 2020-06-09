@@ -16,3 +16,6 @@ find . -type d -exec chmod g+s {} \; -print
 find . -type d -exec chgrp group_name {} \; -print
 
 find . -type f -exec chgrp group_name {} \; -print
+
+# To remove a sticky bit for group
+chmod -R ug-s programs/; 
