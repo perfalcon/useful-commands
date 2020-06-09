@@ -5,7 +5,7 @@ generates the abc.ipl
 then execute the abc.ip ( ./abc.ipl), it shows the errors why the tpl is generation is failing.
 
 
-To propagate permissions down on Linux/Unix environment: (sticky keys)
+#To propagate permissions down on Linux/Unix environment: (sticky keys)
 
 Execute following commands at the directory & below you wanted.
 
