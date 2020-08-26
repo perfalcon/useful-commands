@@ -4,6 +4,9 @@ Execute this :/opt/Interwoven/TeamSite/bin/iwpt_compile.ipl -pt /iwmnt/default/m
 generates the abc.ipl
 then execute the abc.ip ( ./abc.ipl), it shows the errors why the tpl is generation is failing.
 
+#TS - Perl Help
+http://TS-Server/iw/help/tst/pt/
+
 
 #To propagate permissions down on Linux/Unix environment: (sticky keys)
 
