@@ -17,5 +17,6 @@
 * [Component Basics](https://docs.adobe.com/content/help/en/experience-manager-learn/getting-started-wknd-tutorial-develop/component-basics.html)
 * [AEM Lazybones](https://helpx.adobe.com/experience-manager/using/aem_lazybones.html)
 
-
+**Certification Material**
+* [aem-quick-start](https://www.aemquickstart.in/p/adobe-aem-6-developer-certification.html)
 
