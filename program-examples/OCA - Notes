@@ -1,2 +1,4 @@
 
-For the OCA exam, you can check following DateTimeFormatter types: BASIC_ISO_DATE, ISO_DATE, ISO_LOCAL_DATE, ISO_TIME, ISO_LOCAL_TIME, ISO_DATE_TIME, ISO_LOCAL_DATE_TIME. 
+For the OCA exam, you can check following DateTimeFormatter types: 
+BASIC_ISO_DATE, ISO_DATE, ISO_LOCAL_DATE, ISO_TIME, 
+ISO_LOCAL_TIME, ISO_DATE_TIME, ISO_LOCAL_DATE_TIME. 
