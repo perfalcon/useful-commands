@@ -1,0 +1,2 @@
+(Get-WmiObject -query 'select * from SoftwareLicensingService').OA3xOriginalProductKey
+https://www.howtogeek.com/206329/how-to-find-your-lost-windows-or-office-product-keys/
