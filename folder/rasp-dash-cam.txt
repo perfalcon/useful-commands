@@ -1,0 +1,48 @@
+
+References:
+One:
+https://www.raspberrypi.org/forums/viewtopic.php?f=41&t=207840&start=25
+https://github.com/JVital2013/RoadApplePi
+https://github.com/matt2005/RoadApplePi
+
+Two:
+https://www.instructables.com/Car-Raspberry-Pi3-Dash-Cam/
+https://github.com/vijay2552007/CarCam/blob/master/CamProj/scripts/shell/record.sh
+
+
+
+installation:
+1) Raspberry lite: https://www.raspberrypi.org/documentation/installation/noobs.md
+2) Apache2 : https://www.raspberrypi.org/documentation/remote-access/web-server/apache.md -- sudo apt install apache2
+3) FFMPEG : sudo apt install ffmpeg
+4) recording script:
+    #!/bin/sh
+ 
+file_name=/var/www/html/vids/dashcam_
+
+for i in `seq 1 1 100` 
+do
+   	echo "Welcome $i times..."
+
+	current_time=$(date "+%b-%d-%Y__%H.%M.%S")
+	echo "Current Time : $current_time"
+	 
+	new_fileName=$file_name$current_time.mp4
+	echo "New FileName: " "$new_fileName"
+	
+	#This was the toughest part of the whole project to find the optimal settings for recording.
+	ffmpeg -y -i /dev/video0 -c:v h264_omx -b:v 5M -t 300 $new_fileName
+
+	echo "Done with recording..."
+
+done
+
+
+5) make it a crontab
+#To record from USB Cam
+@reboot /home/pi/CamProj/scripts/shell/record.sh &
+
+
+issues;
+enable wifi: https://www.raspberrypi.org/forums/viewtopic.php?t=212536
+            https://www.raspberrypi.org/documentation/configuration/wireless/
