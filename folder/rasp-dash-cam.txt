@@ -41,8 +41,19 @@ done
 5) make it a crontab
 #To record from USB Cam
 @reboot /home/pi/CamProj/scripts/shell/record.sh &
+6) cront tab setup on reboot:
+https://rahulmahale.wordpress.com/2014/09/03/solved-running-cron-job-at-reboot-on-raspberry-pi-in-debianwheezy-and-raspbian/
+7) setup videos folder to browseable from web-browser  ... to write instructions
+  http://rdashcam/vids/
+  change the raspberry pi name using 'raspi-config'
+8) setup accespoint:
 
 
 issues;
 enable wifi: https://www.raspberrypi.org/forums/viewtopic.php?t=212536
             https://www.raspberrypi.org/documentation/configuration/wireless/
+	    
+	    aaccespoint -- -not fixed
+	    https://learn.sparkfun.com/tutorials/setting-up-a-raspberry-pi-3-as-an-access-point/all
+	    https://raspberrypi.stackexchange.com/questions/111653/cant-start-hostapd-job-for-hostapd-service-failed-because-the-control-process
+	    https://github.com/raspberrypi/documentation/issues/1018
