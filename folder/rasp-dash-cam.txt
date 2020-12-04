@@ -57,6 +57,7 @@ enable wifi: https://www.raspberrypi.org/forums/viewtopic.php?t=212536
 	    https://learn.sparkfun.com/tutorials/setting-up-a-raspberry-pi-3-as-an-access-point/all
 	    https://raspberrypi.stackexchange.com/questions/111653/cant-start-hostapd-job-for-hostapd-service-failed-because-the-control-process
 	    https://github.com/raspberrypi/documentation/issues/1018
+	    https://www.raspberrypi.org/forums/viewtopic.php?t=266214
 	    
 	    
 	    
