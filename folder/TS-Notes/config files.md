@@ -5,7 +5,7 @@ Category 1:
 4. iw-home/local/config/
 5. iw-home/httpd/iw/tinymce/config/custom_content.css
 6. iw-home/httpd/iw/tinymce/config/custom_content.js
-7. iw-home/
+7. iw-home/local/config/lib/content_center/livesite_customer_src/etc/conf/livesite_customer/pagetype-config.xml
 8. od-home/etc/odnodes.xml ( contains nodes details like the ip and routing if any)
 9. od-home/etc/odbase.xml ( server config, has allowed deployments config)
 10. od-home/etc/odrcvr.xml
