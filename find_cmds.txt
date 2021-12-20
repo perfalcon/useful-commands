@@ -34,3 +34,8 @@ find /iwmnt/abc/edf/WORKAREA/content    -type d -exec chmod 2775 {} +
 
 To find specific files , grep a word and display them with the line matched  ( used a for though)
 for i in `find . -name "*.xml" -type f  -exec grep -q "admin.log" '{}' \; -print`; do echo "========";echo $i; grep -i "admin.log" $i ; done;
+
+
+To get list of files updated in reverse order
+find $1 -type f -exec stat --format '%Y :%y %n' "{}" \; | sort -nr | cut -d: -f2- | head
+
