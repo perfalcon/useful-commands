@@ -39,3 +39,5 @@ for i in `find . -name "*.xml" -type f  -exec grep -q "admin.log" '{}' \; -print
 To get list of files updated in reverse order
 find $1 -type f -exec stat --format '%Y :%y %n' "{}" \; | sort -nr | cut -d: -f2- | head
 
+for i in `grep -Rl "list.json"` ; do echo `ls -ltr $i | tr -s ' ' | cut -d' ' -f6-` ; done;
+
