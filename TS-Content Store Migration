@@ -1,0 +1,84 @@
+Content Store Migration in Teamsite  (https://support.opentext.com/kb_view.do?sys_kb_id=e9c1e29497525d105700361e6253afe1)
+====================================
+TeamSite - How to copy a content store from one server to another on Unix
+KB0716094  -  Latest Version
+210 views
+Applies to
+Summary
+
+In TeamSite, how can you copy a content store from one server to another on Unix?
+Resolution
+
+ 
+Copying the content store from one Unix TeamSite server (Server A) to another (Server B)
+
+1. Make a copy of the directory /iw-store/default on Server A with TeamSite FROZEN or SHUT DOWN.
+
+2. On Server B, shut down TeamSite (/etc/init.d/iw.server stop) and rename the original content store to /iw-store/default.old. Then copy the default directory from Server A in its place. That is, if default.old is in /iw-store, then place the copied iw-store/default in /iw-store.
+
+3. Rename tsusers.xml, roles.xml and tsgroups.xml (if it exists) on Server B to tsusers.xml.original, roles.xml.original and tsgroups.xml.original.
+
+4. Copy tsusers.xml, roles.xml and tsgroups.xml from Server A to Server B. Open tsusers.xml and roles.xml and make sure that those users are valid for Server B.
+
+5. Change the ownership, group and permissions on the copied store on the new server:
+`iwgethome`/iw-perl/bin/iwperl `iwgethome`/private/bin/walkArchive.pl -p /iw-store
+
+NOTE: those are backticks, NOT single quotes.
+
+6. Merge the users and groups from /etc/passwd, /etc/shadow and /etc/group from the old server to the new server, making sure the uids and gids are the same where possible (if not possible, then you will need to run iwidmap later). You do NOT need to do this for LDAP users, but you must configure TS on the new version in the same way that you have it configured on the old server if you're using PAM authentication or direct LDAP authentication with user_databases.xml.
+
+The following steps are NOT necessary if the uids and gids for the users and groups on the new server are the SAME as the uids and gids on the old server.
+If the uids and gids are different on the new server, then it will also be necessary to run iwidmap to remap those uids and gids for any local users and groups used in the store, since the they will be different on server B.
+
+7. First run these commands on server A:
+iwidmap -u -x /tmp/iwidusers_default.xml /iw-store/default
+iwidmap -g -x /tmp/iwidgroups_default.xml /iw-store/default
+
+(assuming your content store is in /iw-store).
+
+8. Edit both files that are created (iwidusers_default.xml, iwidgroups_default.xml, etc.) and confirm that "NAME" elements contain all the users and groups on the new server. NOTE: The new uids and gids will be looked up automatically in the next step due to the "-a" option.
+
+9. Then copy the files to server B, and run the following commands on that server:
+iwidmap -u -a -i /tmp/iwidusers_default.xml /iw-store/default
+iwidmap -g -a -i /tmp/iwidgroups_default.xml /iw-store/default
+
+10. Once the above steps are complete, start TeamSite on Server B, log into the UI, and confirm that the local TeamSite users and groups were properly assigned (files/workareas are accessible, etc.).
+
+All content, editions, versions, and file associations are migrated with this process. Follow the same steps for any other content stores that you have created, including the iwadmin store that contains workflow models and SitePublisher components.
+Post-Migration Steps
+
+TeamSite 7.1 and earlier to TeamSite 7.2 and later
+Set the dependencies for SitePublisher by running this script:
+`iwgethome`/iw-perl/bin/iwperl `iwgethome`/install/livesite/install_scripts/iw_migrate_dependencies.ipl -s
+
+NOTE: those are backticks, NOT single quotes.
+
+TeamSite 7.x and earlier to 8.x and later
+Run these scripts. Note that the default store MUST be mounted when running them:
+<install_dir>/WCMService/install_scripts/estudio_global_project_install.sh -i `iwgethome` <install_dir>/WCMService
+<install_dir>/WCMService/install_scripts/estudio_global_project_blc_config.sh `iwgethome` <install_dir>/WCMService
+
+TeamSite 16.3 and earlier to 16.4 and later
+Run this script:
+<install_dir>/Mobile/install/livesite/install_scripts/mobile_component_install.sh
+
+TeamSite 16.6.0.1 and earlier to TeamSite 16.6.1 and later
+These scripts must be run with the stores mounted:
+<install_dir>/WCMService/install_scripts/estudio_global_project_blc_config.sh `iwgethome` <install_dir>/WCMService
+
+`iwgethome`/install/livesite/install_scripts/sitepub_component_install.sh
+
+NOTE: those are backticks, NOT single quotes.
+
+It is also required to index existing EStudio projects that were migrated with the store in order for Project Search & Suggestions to work in Component browser. The projects must also be published to the LiveSite 16.6.1 runtime.
+Migrating iwadmin Store
+
+If you need to migrate the iwadmin store containing workflow models and SitePublisher components, follow the same directions to copy that directory.
+You must restart TeamSite with the migrated iwadmin store in place and then run these scripts:
+`iwgethome`/install/livesite/install_scripts/sitepub_component_install.sh
+`iwgethome`/install/livesite/install_scripts/sitepub_mount_install.sh
+
+NOTE: those are backticks, NOT single quotes.
+Legacy Article ID
+
+KB4996294
