@@ -14,3 +14,6 @@ for i in 1 4 5 ; do  echo $i; done;
 
 #To end list of job on Teamsite
 for i in 343700 315660 315472 ; do  echo $i; ./iwrmjob $i; done;
+
+# Search for keyword in files in current and sub-folders and list their info
+for i in `grep -Rl "<list>"`  ; do echo `ls -ltr $i` ; done;
