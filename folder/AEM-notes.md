@@ -5,6 +5,7 @@
 * [AEM WebConsole](http://localhost:4502/system/console/bundles)
 * [AEM CRX](http://localhost:4502/crx/de/index.jsp)
 * [AEM Websites](http://localhost:4502/siteadmin#/content)
+* [AEM Components Console](http://localhost:4502/system/console/components)
 
 **Documentation**:
 * [Deploy.html](https://docs.adobe.com/content/help/en/experience-manager-65/deploying/deploying/deploy.html)
