@@ -13,3 +13,7 @@ zgrep -E 'word1|word2' abc.log
 Search and replace in a file (https://www.internalpointers.com/post/linux-find-and-replace-text-multiple-files)
 grep -Rl 'search-text'| xargs sed -i 's/search-text/replace-text/g'
 
+Search in a Tail'ed log file
+tail -10000f cron.log  | grep '010372\|405010\|030136\|090185\|401068'
+tail -1000f cron.log  | grep  "\[MyWord\]"
+
