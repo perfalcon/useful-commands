@@ -2,3 +2,33 @@ Download a specific file
 curl -LJO <raw url to the file in git>
 For Example:
   curl -LJO https://raw.githubusercontent.com/udacity/RoboND-Localization-Project/master/urdf/udacity_bot.gazebo
+
+
+git branch -r  -- list all the branches
+git checkout x-branch  -- switches to the branch to x-branch
+git checkout -b newBranch -- creates and switches to new branch - 'newBranch'
+
+git pull -- to sync your local with the remote branch
+
+
+git clone -b tutorial/pages-templates-start https://github.com/adobe/aem-guides-wknd.git
+
+git clone <url to repo>
+
+
+
+git diff commit1 commit2
+git diff --name-only commit1 commit2  -- Provides only the file names which are different.
+git diff --name-only origin/master  origin/POC-Mybranch
+
+
+git add .jenkins
+git commit -m "Created the Jenkinsfile"
+
+
+
+Hard Reset / Overwrite all the changes
+https://stackoverflow.com/questions/1125968/how-do-i-force-git-pull-to-overwrite-local-files
+
+git fetch --all
+git reset  --hard origin/main 
