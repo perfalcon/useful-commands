@@ -1,0 +1,26 @@
+name: SSH
+
+on:
+  push:
+    branches: ["dev"]
+  
+jobs:
+  run_example_job:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - name: Ping Server
+      run: |
+        pwd
+        ls -ltr
+        ping soa813
+    - name: print out example job
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: "abcServer"
+        username: "user"
+        key: ${{ secrets.SSH_B_PRIVATE_KEY }}
+        #port: ${{ secrets.PORT }}
+        command_timeout: 30m
+        script: | 
+          echo "Nice Job!!!"
