@@ -1,0 +1,65 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    types: [ opened, reopened ]
+      # branches:
+    #  - 'feature**'
+    # [ "main" ]
+
+jobs:
+  validate_version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: get version from pom.xml
+        id: getxml
+        uses: mavrosxristoforos/get-xml-info@2.0
+        with:
+          xml-file: pom.xml
+          xpath: "//*[local-name()='project']/*[local-name()='version']"
+      - name: print version from pom
+        run: echo ${{ steps.getxml.outputs.info }}
+  build:
+    needs: validate_version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v4
+        with:
+          java-version: ' 8.0'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: get version from pom.xml
+        id: getxml
+        uses: mavrosxristoforos/get-xml-info@2.0
+        with:
+          xml-file: pom.xml
+          xpath: "//*[local-name()='project']/*[local-name()='version']"
+      - name: Get current date
+        id: date
+        run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+      - name: Create Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/create-release@v1
+        with:
+          tag_name: '${{ steps.getxml.outputs.info }}-${{ env.DATE }}'
+          release_name: ${{ github.ref_name }}
+          body: |
+            This is a new release!
+            [Link: Check out the changes here.](https://github.com/SubaruOfAmerica/Bala_Test_Repo/tree/${{ github.ref_name }})
