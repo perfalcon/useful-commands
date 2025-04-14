@@ -1,0 +1,60 @@
+name: learn-github-actions
+run-name: ${{ github.actor }} is learning GitHub Actions
+on: [push]
+jobs:
+  my_job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo Hello world!
+
+  rest-job:
+    name: rest job
+    needs: my_job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: calling an api
+        env:
+          MY_VAR: Hi there! My name is
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api https://api.restful-api.dev/objects/7   
+        #  gh label create bug --description "Something isn't working" --color FF0000
+  
+  check_version:
+    runs-on: ubuntu-latest
+    needs: rest-job
+    if: ${{ endsWith(github.ref, '/dev') || endsWith(github.ref, '/main') || startsWith(github.ref, 'refs/tags')}}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Print Version 
+        env:
+         GH_TOKEN: ${{ github.token }}
+        run: |
+          python -c "import version; print(version.__version__)"
+          mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout
+          gh label list
+
+  job1:
+    runs-on: ubuntu-latest
+    needs: check_version
+    outputs:
+      output1: ${{ steps.step1.outputs.test }}
+      output2: ${{ steps.step2.outputs.test }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: step1
+        run: >-
+         echo "test="$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)"" >> "$GITHUB_OUTPUT"
+      - id: step2
+        run: echo "test=world" >> "$GITHUB_OUTPUT"
+
+  job2:
+    runs-on: ubuntu-latest
+    needs: job1
+    steps:
+      - env:
+          OUTPUT1: ${{needs.job1.outputs.output1}}
+          OUTPUT2: ${{needs.job1.outputs.output2}}
+        run: echo "$OUTPUT1 $OUTPUT2"
