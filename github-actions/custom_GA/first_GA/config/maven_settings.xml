@@ -1,0 +1,36 @@
+<settings>
+    <interactiveMode>false</interactiveMode>
+    <profiles>
+        <profile>
+            <id>_custom_repositories_</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>myjfrog</id>
+                    <name>scom-mvn-release</name>
+                    <url>https://abc.jfrog.io/artifactory/scom-mvn-release</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories/>
+        </profile>
+    </profiles>
+    <servers>
+        <server>
+            <id>myjfrog</id>
+            <username>${jfrog.username}</username>
+            <password>${jfrog.password}</password>
+        </server>
+        <server>
+            <id>LinuxTomcatServer</id>
+            <username>${tomcat.username}</username>
+            <password>${tomcat.password}</password>
+        </server>
+    </servers>
+    <mirrors/>
+    <proxies/>
+</settings>
