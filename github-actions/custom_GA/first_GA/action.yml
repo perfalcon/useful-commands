@@ -1,0 +1,109 @@
+name: 'Validate Build Package Deploy'
+author: '@perfalcon'
+description: 'Validate the pom, Build with Test Cases, Build, Package and Deploy'
+inputs:
+  _jfrog_username:  # id of input
+    description: 'JFrog UserName'
+    required: true
+    default: ''
+  _jfrog_password:  # id of input
+    description: 'JFrog Password'
+    required: true
+    default: ''
+  tomcat_username:
+    description: 'Tomcat Username'
+    default: ''
+  tomcat_password:
+    description: 'Tomcat Password'
+    default: ''
+  lifecycle:
+    description: 'Which Life cycle to run'
+    required: true
+    default: 4
+    type: number
+
+
+
+runs:
+  using: "composite"
+  steps:
+
+    - name: Checkout main version
+      uses: actions/checkout@v4
+      with:
+        ref: main
+
+
+    - name: Get Main Version
+      id: getMainVersion
+      run: |
+        echo "info=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)" >> "$GITHUB_OUTPUT"
+      shell: bash
+
+
+    - name: Checkout current version
+      uses: actions/checkout@v4
+
+    - name: Get current version
+      id: getCurrentVersion
+      run: |
+        echo "currver="$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)"" >> "$GITHUB_OUTPUT"
+      shell: bash
+
+    - name: Validate version
+      id: validateVersion
+      run: |
+        chmod +x ${{ github.action_path }}/scripts/validate_version.sh
+        echo "${{ steps.getMainVersion.outputs.info }} \n${{ steps.getCurrentVersion.outputs.currver }}"
+        info=$(${{ github.action_path }}/scripts/validate_version.sh ${{ steps.getMainVersion.outputs.info }} ${{ steps.getCurrentVersion.outputs.currver }})
+        echo "info=$info" >> "$GITHUB_OUTPUT"
+        #echo "INFO==> $info"
+      shell: bash
+
+
+    - name: StopOrContinue
+      if: ${{ inputs.lifecycle >= 1 && steps.validateVersion.outputs.info == 'false' }}
+      uses: actions/github-script@v7.0.1
+      with:
+          script: |
+            core.setFailed('Please update the project version in pom as per the guidelines')
+
+
+    - name: Set up JDK 1.8
+      if: ${{ success()  && inputs.lifecycle >= 2}}
+      uses: actions/setup-java@v4
+      with:
+            java-version: ' 8.0'
+            distribution: 'temurin'
+            cache: maven
+
+    - name: Build with Test Cases
+      if: ${{ inputs.lifecycle >= 2}}
+      run: |
+        echo "===== Build with Test Cases ======"
+        cp ${{ github.action_path }}/config/maven_settings.xml ~/.m2/settings.xml
+        mvn -B clean test --file pom.xml -U   -Djfrog.username=${{inputs._jfrog_username}} -Djfrog.password=${{inputs._jfrog_password}}
+      shell: bash
+
+    - name: Build and Package
+      if: ${{ inputs.lifecycle >= 3}}
+      run: |
+        echo "===== Build and Package ======"
+        cp ${{ github.action_path }}/config/maven_settings.xml ~/.m2/settings.xml
+        mvn -B clean package  --file pom.xml -DskipTests -U  -Djfrog.username=${{inputs._jfrog_username}} -Djfrog.password=${{inputs._jfrog_password}}
+        mkdir staging && cp target/*.war staging
+      shell: bash
+
+    - name: Upload Package
+      if: ${{ inputs.lifecycle >= 4}}
+      uses: actions/upload-artifact@v4
+      with:
+        name: Package
+        path: staging
+
+    - name: Deploy to Tomcat with Maven
+      if: ${{ inputs.lifecycle >= 5}}
+      run: |
+        echo "===== Deploying to Tomcat with Maven Plugin ===="
+        mvn  -Djfrog.username=${{inputs._jfrog_username}} -Djfrog.password=${{inputs._jfrog_password}} -Dtomcat.username=${{inputs.tomcat_username}}  -Dtomcat.password=${{inputs.tomcat_password}} tomcat7:redeploy-only -f pom.xml
+      shell: bash
