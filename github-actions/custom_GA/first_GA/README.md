@@ -1,4 +1,4 @@
-# GitHub Action for SCOM's Validate-Build-Package-Deploy
+# GitHub Action to Validate-Build-Package-Deploy
 
 - This is a Composite GitHub Action.
 - This Action validates, builds, creates downloadable package and deploys to tomcat server.
