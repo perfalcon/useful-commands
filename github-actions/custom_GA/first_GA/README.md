@@ -11,7 +11,7 @@ on:
   push:
     branches: [ "Branch-Name" ]
   pull_request:
-    branches: [ ""Branch-Name" ]
+    branches: [ "Branch-Name" ]
 
 jobs:
   Validate-Build-Deploy:
