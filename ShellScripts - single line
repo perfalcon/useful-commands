@@ -18,5 +18,3 @@ for i in 343700 315660 315472 ; do  echo $i; ./iwrmjob $i; done;
 # Search for keyword in files in current and sub-folders and list their info
 for i in `grep -Rl "<list>"`  ; do echo `ls -ltr $i` ; done;
 
-# Search for a specific class in the list of jars
-find . -name "*.jar" -exec sh -c 'jar tvf "{}" | grep "org/xml/sax/SAXException.class"' \;
