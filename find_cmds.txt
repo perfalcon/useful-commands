@@ -41,3 +41,5 @@ find $1 -type f -exec stat --format '%Y :%y %n' "{}" \; | sort -nr | cut -d: -f2
 
 for i in `grep -Rl "list.json"` ; do echo `ls -ltr $i | tr -s ' ' | cut -d' ' -f6-` ; done;
 
+# Search for a specific class in the list of jars
+find . -name "*.jar" -exec sh -c 'jar tvf "{}" | grep "org/xml/sax/SAXException.class"' \;
